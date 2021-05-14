@@ -1,6 +1,6 @@
-## This playbook for make cluster of any number of etcd (key/value store)
+## Ansible playbook for setup etcd cluster
 
-first of all you should setup **inventory.ini** file for target servers in **etcd** group like this :
+first of all you should configure **inventory.ini** file for your etcd servers in **etcd** group like this :
 
 ```
 [etcd]
@@ -10,13 +10,13 @@ etcd3 ansible_host=ip_etcd_server_3 ansible_user=root ansible_ssh_pass=pass
 ...
 ```
 
-then make sure your target server network crad be **eth0**, if it's different , change it in this dir **roles/create-cluster/templates/etcd.conf.yaml.j2**.
+then make sure the name of **NIC** in target server be **eth0**, if it's different , change it in this directory **roles/create-cluster/templates/etcd.conf.yaml.j2**.
 
 
-> by default this playbook use **v3.4.10** etcd version 
+> by default , this playbook use **v3.4.10** etcd version 
 
-you can install any version of etcd cluster , just change  
-**ETCD_VER** variable in this dir **roles/install-etcd/vars/main.yml**
+you can install any version of etcd , if you need another version , just change this
+**ETCD_VER** variable in this directory **roles/install-etcd/vars/main.yml**
 
 ```
 ETCD_VER: v3.4.10
