@@ -15,7 +15,7 @@ then make sure your target server network crad be **eth0**, if it's different , 
 
 > by default this playbook use **v3.4.10** version 
 
-you can install any version of etcd cluster , just change environment variables in this dir *roles/install-etcd/vars/main.yml***
+you can install any version of etcd cluster , just change environment variables in this dir **roles/install-etcd/vars/main.yml**
 
 ```
 ETCD_VER: v3.4.10
