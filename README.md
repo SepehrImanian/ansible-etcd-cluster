@@ -13,9 +13,10 @@ etcd3 ansible_host=ip_etcd_server_3 ansible_user=root ansible_ssh_pass=pass
 then make sure your target server network crad be **eth0**, if it's different , change it in this dir **roles/create-cluster/templates/etcd.conf.yaml.j2**.
 
 
-> by default this playbook use **v3.4.10** version 
+> by default this playbook use **v3.4.10** etcd version 
 
-you can install any version of etcd cluster , just change environment variables in this dir **roles/install-etcd/vars/main.yml**
+you can install any version of etcd cluster , just change  
+**ETCD_VER** variable in this dir **roles/install-etcd/vars/main.yml**
 
 ```
 ETCD_VER: v3.4.10
