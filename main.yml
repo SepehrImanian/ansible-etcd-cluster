@@ -1,0 +1,7 @@
+---
+- name: etcd cluster
+  strategy: linear
+  hosts: lxc
+  roles:
+    - install-etcd
+    - create-cluster

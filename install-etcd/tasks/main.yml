@@ -1,0 +1,42 @@
+- name: download etcd binary tar.gz file
+  get_url:
+    url: https://github.com/etcd-io/etcd/releases/download/{{ ETCD_VER }}/etcd-{{ ETCD_VER }}-linux-amd64.tar.gz
+    dest: /home/etcd-{{ ETCD_VER }}-linux-amd64.tar.gz
+    timeout: 60
+    backup: yes
+    mode: 0440
+  tags: [ get_etcd ]
+
+- name: extract etcd .tar.gz file
+  unarchive:
+    src: /home/etcd-{{ ETCD_VER }}-linux-amd64.tar.gz
+    dest: /home
+    remote_src: yes
+  tags: [ get_etcd ]
+
+- name: stat etcd
+  stat: 
+    path: /home/etcd-{{ ETCD_VER }}-linux-amd64/etcd
+  register: etcd_file_stat
+  tags: [ install_etcd ]
+
+- name: move etcd and etcdctl to /usr/local/bin/
+  copy:
+    src: /home/etcd-{{ ETCD_VER }}-linux-amd64/{{ item.name }}
+    dest: /usr/local/bin/{{ item.name }}
+    mode: 0777
+    remote_src: yes
+  loop:
+    - { name: etcd }
+    - { name: etcdctl }
+  when: etcd_file_stat.stat.exists
+  tags: [ install_etcd ]
+
+- name: delete etcd and etcdctl in extract dir
+  file:
+    path: '/home/etcd-{{ ETCD_VER }}-linux-amd64/{{ item }}'
+    state: absent
+  with_items:
+    - etcd
+    - etcdctl
+  tags: [ install_etcd ]
