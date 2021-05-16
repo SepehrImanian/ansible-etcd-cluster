@@ -1,0 +1,9 @@
+---
+- name: etcd cluster
+  strategy: free
+  hosts: etcd
+  roles:
+    - etcd-install
+    # - etcd-cluster
+    - etcd-cluster-tls
+    # - etcd-destroy

@@ -1,0 +1,56 @@
+- name: create a data directory
+  file:
+    path: /var/lib/etcd/{{ inventory_hostname }}.etcd
+    state: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0700
+  with_items:
+    - absent
+    - directory
+  tags: [ add_service ]
+
+- name: create a etcd service
+  copy:
+    src: etcd.service
+    dest: /etc/systemd/system/etcd.service
+    remote_src: False
+    owner: root
+    group: root
+    mode: 0644
+  tags: [ add_service ]
+
+- name: create directory for etcd configuration
+  file:
+    path: /etc/etcd
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  tags: [ add_service ]
+
+- name: create configuration file for etcd
+  template:
+    src: etcd.conf.yaml.j2
+    dest: /etc/etcd/etcd.conf.yaml
+    owner: root
+    group: root
+    mode: 0600
+  tags: [ add_service ]
+
+- name: enable the etcd service
+  systemd:
+    name: etcd
+    enabled: yes
+  tags: [ enable_etcd_service ]
+
+- name: daemon reload
+  systemd:
+    daemon_reload: yes
+  tags: [ daemon_reload ]
+
+- name: Make sure a service is running
+  systemd: 
+    state: started 
+    name: etcd
+  tags: [ start_etcd_service ]
