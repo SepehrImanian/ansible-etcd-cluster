@@ -27,4 +27,13 @@ in the end , run this commmad for install etcd cluster :):
 ansible-playbook -i inventory.ini etcd-cluster.yml
 ```
 
+```
+ETCDCTL_API=3 etcdctl \
+  --endpoints=https://127.0.0.1:2379 \
+  --cacert=/etc/etcd/ssl/ca.crt \
+  --cert=/etc/etcd/ssl/server.crt \
+  --key=/etc/etcd/ssl/server.key \
+  member list
+```
+
 **i am gonna add tls soon as possible , don't worry about it ;)**
