@@ -1,6 +1,6 @@
 # Ansible playbook for setup etcd cluster
 
-## Get Started :
+## Get Started
 
 first of all you should configure **inventory.ini** file for your etcd servers in **etcd** group like this :
 
@@ -33,7 +33,7 @@ ansible-playbook -i inventory.ini etcd-manager.yml
 ```
 
 
-## Install etcd cluster without tls :
+## Install etcd cluster without tls
 
 by default etcd cluster install with tls but for install etcd cluster without tls you should change two files like this:
 
@@ -99,7 +99,7 @@ and then run
 ansible-playbook -i inventory.ini etcd-manager.yml
 ```
 
-### check etcd cluster member list
+### Check etcd cluster member list
 
 > for get information about non tls etcd cluster, just run command without certification flags
 
