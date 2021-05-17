@@ -22,12 +22,45 @@
 
 - name: create directory for etcd configuration
   file:
-    path: /etc/etcd
+    path: "{{ item }}"
     state: directory
     owner: root
     group: root
     mode: 0755
+  with_items:
+      - /etc/etcd
+      - /etc/etcd/ssl
   tags: [ add_service ]
+
+- name: copy over the CA certificate
+  copy:
+    src: ./../artifacts/ca.crt
+    remote_src: False
+    dest: /etc/etcd/ssl/ca.crt
+    owner: root
+    group: root
+    mode: 0644
+  tags: [ copy_ca ]
+
+- name: copy over the `etcd` member certificate
+  copy:
+    src: ./../artifacts/{{inventory_hostname}}.crt
+    remote_src: False
+    dest: /etc/etcd/ssl/server.crt
+    owner: root
+    group: root
+    mode: 0644
+  tags: [ copy_ca ]
+
+- name: copy over the `etcd` member key
+  copy:
+    src: ./../artifacts/{{inventory_hostname}}.key
+    remote_src: False
+    dest: /etc/etcd/ssl/server.key
+    owner: root
+    group: root
+    mode: 0600
+  tags: [ copy_ca ]
 
 - name: create configuration file for etcd
   template:

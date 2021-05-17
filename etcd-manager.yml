@@ -1,9 +1,4 @@
 ---
-- name: etcd cluster
-  strategy: free
-  hosts: etcd
-  roles:
-    - etcd-install
-    # - etcd-cluster
-    - etcd-cluster-tls
-    # - etcd-destroy
+- import_playbook: private-ip-etcd/private-ip-etcd.yml
+- import_playbook: generate-ca-tls/tls.yml
+- import_playbook: etcd/etcd-cluster.yml

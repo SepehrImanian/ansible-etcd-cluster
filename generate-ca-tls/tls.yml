@@ -1,0 +1,5 @@
+- hosts: localhost
+  gather_facts: False
+  become: False
+  tasks:
+    - include: tasks/main.yml

@@ -2,7 +2,7 @@
   get_url:
     url: https://github.com/etcd-io/etcd/releases/download/{{ ETCD_VER }}/etcd-{{ ETCD_VER }}-linux-amd64.tar.gz
     dest: /home/etcd-{{ ETCD_VER }}-linux-amd64.tar.gz
-    timeout: 200
+    timeout: 250
     backup: yes
     mode: 0440
   tags: [ get_etcd ]
