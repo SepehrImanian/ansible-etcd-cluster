@@ -1,0 +1,27 @@
+- name: stop service etcd, if running and disable service
+  systemd:
+    name: etcd
+    state: stopped
+    enabled: no
+  tags: [ remove_etcd_service ]
+
+- name: remove etcd service
+  file:
+    path: /etc/systemd/system/etcd.service
+    state: absent
+  tags: [ remove_etcd_service ]
+
+- name: remove directory and remove tls certificate content + remove etcd config file
+  file:
+    path: /etc/etcd/
+    state: absent
+  tags: [ remove_etcd_files ]
+
+- name: folder and .tar.gz in `/home` directory
+  file:
+    path: '/home/{{ item }}'
+    state: absent
+  loop:
+    - etcd-{{ ETCD_VER }}-linux-amd64
+    - etcd-{{ ETCD_VER }}-linux-amd64.tar.gz
+  tags: [ remove_etcd_files ]
