@@ -17,11 +17,8 @@
     state: absent
   tags: [ remove_etcd_files ]
 
-- name: folder and .tar.gz in `/home` directory
+- name: remove a data directory
   file:
-    path: '/home/{{ item }}'
+    path: /var/lib/etcd/
     state: absent
-  loop:
-    - etcd-{{ ETCD_VER }}-linux-amd64
-    - etcd-{{ ETCD_VER }}-linux-amd64.tar.gz
   tags: [ remove_etcd_files ]

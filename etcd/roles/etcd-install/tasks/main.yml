@@ -32,11 +32,11 @@
   when: etcd_file_stat.stat.exists
   tags: [ install_etcd ]
 
-- name: delete etcd and etcdctl in extract dir
+- name: remove etcd donload file directory and .tar.gz in `/home` directory
   file:
-    path: '/home/etcd-{{ ETCD_VER }}-linux-amd64/{{ item }}'
+    path: '/home/{{ item }}'
     state: absent
-  with_items:
-    - etcd
-    - etcdctl
+  loop:
+    - etcd-{{ ETCD_VER }}-linux-amd64
+    - etcd-{{ ETCD_VER }}-linux-amd64.tar.gz
   tags: [ install_etcd ]
