@@ -99,7 +99,7 @@ and then run
 ansible-playbook -i inventory.ini etcd-manager.yml
 ```
 
-### check etcd cluster member list
+### Check etcd cluster member list
 
 > for get information about non tls etcd cluster, just run command without certification flags
 
