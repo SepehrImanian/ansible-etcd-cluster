@@ -1,0 +1,75 @@
+- block:
+    - name: generate private key for each member
+      openssl_privatekey:
+        path: ./../artifacts/{{item}}.key
+        type: RSA
+        size: 4096
+        state: present
+        force: True
+      with_items: "{{ groups['etcd'] }}"
+      delegate_to: localhost
+      run_once: trues
+
+    - name: generate CSR for each member
+      openssl_csr:
+        path: ./../artifacts/{{item}}.csr
+        privatekey_path: ./../artifacts/{{item}}.key
+        common_name: "{{item}}"
+        key_usage:
+          - digitalSignature
+        extended_key_usage:
+          - serverAuth
+          - clientAuth
+        subject_alt_name:
+          - IP:{{ hostvars[item]['privateIP']['stdout']}}
+          - IP:127.0.0.1
+        force: True
+      with_items: "{{ groups['etcd'] }}"
+      delegate_to: all
+      run_once: trues
+ 
+    - name: generate private key for CA
+      openssl_privatekey:
+        path: ./../artifacts/ca.key
+        type: RSA
+        size: 4096
+        state: present
+        force: True
+
+    - name: generate CSR for CA
+      openssl_csr:
+        path: ./../artifacts/ca.csr
+        privatekey_path: ./../artifacts/ca.key
+        common_name: ca
+        organization_name: "Etcd CA"
+        basic_constraints:
+          - CA:TRUE
+          - pathlen:1
+        basic_constraints_critical: True
+        key_usage:
+          - keyCertSign
+          - digitalSignature
+        force: True
+
+    - name: generate self-signed CA certificate
+      openssl_certificate:
+        path: ./../artifacts/ca.crt
+        privatekey_path: ./../artifacts/ca.key
+        csr_path: ./../artifacts/ca.csr
+        provider: selfsigned
+        force: True
+
+    - name: generate an `etcd` member certificate signed with our own CA certificate
+      openssl_certificate:
+        path: ./../artifacts/{{item}}.crt
+        csr_path: ./../artifacts/{{item}}.csr
+        ownca_path: ./../artifacts/ca.crt
+        ownca_privatekey_path: ./../artifacts/ca.key
+        provider: ownca
+        force: True
+      with_items: "{{ groups['etcd'] }}"
+
+  tags: [ generate_ca ]
+  rescue:
+    - debug:
+        msg: "generate tls certificate has been failed, please check your localhost host"

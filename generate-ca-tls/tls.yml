@@ -1,5 +1,6 @@
 - hosts: localhost
-  gather_facts: False
+  gather_facts: false
   become: False
   tasks:
-    - include: tasks/main.yml
+    - include: tasks/pre-readiness.yml
+    - include: tasks/generate_ca.yml

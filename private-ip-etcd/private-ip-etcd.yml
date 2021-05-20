@@ -1,5 +1,0 @@
-- hosts: etcd
-  tasks:
-    - name: get private ip of each etcd node
-      shell: ip -f inet addr show eth0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
-      register: privateIP

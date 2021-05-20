@@ -1,0 +1,16 @@
+- block:
+    - name: get private ip of each etcd node
+      shell: ip -f inet addr show eth0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+      register: privateIP
+      delegate_to: "{{ item }}"
+      run_once: true
+      loop: "{{ groups['etcd'] }}"
+
+    - name: create ./artifacts directory to house keys and certificates
+      file:
+        path: ./../artifacts
+        state: directory
+  tags: [ pre_readiness ]
+  rescue:
+    - debug:
+        msg: "pre readiness for generate tls certificate has been failed, please check your localhost host"
