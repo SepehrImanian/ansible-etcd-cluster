@@ -21,12 +21,10 @@
           - serverAuth
           - clientAuth
         subject_alt_name:
-          - IP:{{ hostvars[item]['privateIP']['stdout']}}
+          - IP:{{ hostvars[item]['ansible_host'] }}
           - IP:127.0.0.1
         force: True
       with_items: "{{ groups['etcd'] }}"
-      delegate_to: all
-      run_once: trues
  
     - name: generate private key for CA
       openssl_privatekey:

@@ -1,5 +1,5 @@
 - hosts: localhost
-  gather_facts: false
+  gather_facts: true
   become: False
   tasks:
     - include: tasks/pre-readiness.yml
